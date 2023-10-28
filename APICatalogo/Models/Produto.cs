@@ -16,7 +16,7 @@ namespace APICatalogo.Models
         [PrimeiraLetraMaiuscula]
         public string? Nome { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="A descrição é obrigatória")]
         [StringLength(300)]
         public string? Descricao { get; set; }
 
