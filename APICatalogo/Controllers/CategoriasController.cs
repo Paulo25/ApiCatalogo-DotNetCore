@@ -12,10 +12,24 @@ namespace APICatalogo.Controllers
     public class CategoriasController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
 
-        public CategoriasController(AppDbContext context)
+        public CategoriasController(AppDbContext context, IConfiguration config, ILogger<ProdutosController> logger)
         {
             _context = context;
+            _configuration = config;
+            _logger = logger;
+        }
+
+
+        [HttpGet("autor")]
+        public String GetAutor()
+        {
+            var autor = _configuration["autor"];
+            var stringConexao = _configuration["ConnectionStrings:DefaultConnection"];
+
+            return $"Autor: {autor} conexão: {stringConexao}";
         }
 
         [HttpGet("saudacao/{nome}")]
@@ -47,10 +61,12 @@ namespace APICatalogo.Controllers
         [HttpGet("id:int", Name ="ObterCategoria")]
         public ActionResult<Categoria> Get(int id)
         {
+            _logger.LogInformation($"============GET api/catgegorias/id {id} =============");
             var categoria = _context.Categorias.AsNoTracking().FirstOrDefault(c => c.CategoriaId == id);
 
             if(categoria is null)
             {
+                _logger.LogInformation($"============GET api/catgegorias/id {id} NOT FOUND=============");
                 return NotFound($"Categoria com id={id} não encontrada...");
             }
 
