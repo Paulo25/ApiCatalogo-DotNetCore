@@ -1,8 +1,11 @@
 using APICatalogo.Context;
+using APICatalogo.DTOs.Mappings;
 using APICatalogo.Extensions;
 using APICatalogo.Filters;
 using APICatalogo.Logging;
+using APICatalogo.Repository;
 using APICatalogo.Services;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -30,6 +33,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //configurando serviço de log filter
 builder.Services.AddScoped<ApiLoggingFilter>();
 
+//registrando serviço padrão de unidade de trabalho
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+//registrando serviço de automapper
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new MappingProfile());
+});
+IMapper mapper = mappingConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+//registrando serviço de logging
 builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
 {
     LogLevel = LogLevel.Information

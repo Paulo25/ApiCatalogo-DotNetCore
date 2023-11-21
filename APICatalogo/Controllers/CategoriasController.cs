@@ -1,6 +1,8 @@
 ﻿using APICatalogo.Context;
+using APICatalogo.DTOs;
 using APICatalogo.Models;
 using APICatalogo.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +16,14 @@ namespace APICatalogo.Controllers
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
-        public CategoriasController(AppDbContext context, IConfiguration config, ILogger<ProdutosController> logger)
+        public CategoriasController(AppDbContext context, IConfiguration config, ILogger<ProdutosController> logger, IMapper mapper)
         {
             _context = context;
             _configuration = config;
             _logger = logger;
+            _mapper = mapper;
         }
 
 
@@ -39,7 +43,7 @@ namespace APICatalogo.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetAsync()
         {
             try
             {
@@ -48,7 +52,8 @@ namespace APICatalogo.Controllers
                 {
                     return NotFound("Categorias não encontradas.");
                 }
-                return categorias;
+                var categoriasDto = _mapper.Map<List<CategoriaDTO>>(categorias);
+                return categoriasDto;
             }
             catch (Exception)
             {
