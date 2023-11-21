@@ -1,5 +1,6 @@
 ﻿using APICatalogo.Context;
 using APICatalogo.Models;
+using APICatalogo.Pagination;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
@@ -11,9 +12,15 @@ namespace APICatalogo.Repository
         {
         }
 
-        public IEnumerable<Categoria> GetCategoriasProdutos()
+        public async Task<PagedList<Categoria>> GetCategorias(CategoriasParameters categoriasParameters)
         {
-            return Get().Include(x => x.Produtos);
+            return await PagedList<Categoria>.ToPagedList(Get().OrderBy(on => on.CategoriaId),
+                categoriasParameters.PageNumber, categoriasParameters.PageSize);
+        }
+
+        public async Task<IEnumerable<Categoria>> GetCategoriasProdutos()
+        {
+            return await Get().Include(x => x.Produtos).ToListAsync();
         }
     }
 }

@@ -4,6 +4,8 @@
     {
         IProdutoRepository ProdutoRepository { get; }
         ICategoriaRepository CategoriaRepository { get; }
-        void Commit();
+        
+        //void Commit(); //implementação sincrona
+        Task Commit(); //implementação assincrona
     }
 }

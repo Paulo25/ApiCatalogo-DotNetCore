@@ -10,6 +10,8 @@
     <Compile Remove="Controllers\WeatherForecastController.cs" />
     <Compile Remove="Models\Class.cs" />
     <Compile Remove="Models\ErrosDetails.cs" />
+    <Compile Remove="Pagination\Class.cs" />
+    <Compile Remove="Pagination\ProdutosParameters - Cópia.cs" />
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
 
@@ -20,6 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
