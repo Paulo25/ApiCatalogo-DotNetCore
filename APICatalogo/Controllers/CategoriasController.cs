@@ -3,14 +3,17 @@ using APICatalogo.DTOs;
 using APICatalogo.Models;
 using APICatalogo.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace APICatalogo.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
+    //[EnableCors("PermitirApiRequest")]
     public class CategoriasController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -64,6 +67,7 @@ namespace APICatalogo.Controllers
 
 
         [HttpGet("id:int", Name ="ObterCategoria")]
+        //[EnableCors("PermitirApiRequest")]
         public ActionResult<Categoria> Get(int id)
         {
             _logger.LogInformation($"============GET api/catgegorias/id {id} =============");
