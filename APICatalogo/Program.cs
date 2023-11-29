@@ -147,13 +147,17 @@ app.UseAuthentication();
 //adiciona o middleware que executa o endpoint do request atual
 app.UseAuthorization();
 
-//politica CORS restritiva via atributo
+//politica CORS restritiva, via middleware
 //app.UseCors(opt => opt.
 //    WithOrigins("https://wwwapirequest.io/")
 //     .WithMethods("GET"));
 
+//via atributo 
+//app.UseCors();
+
 //permite qualquer origem, via middleware
 app.UseCors(opt => opt.AllowAnyOrigin());
+
 
 //adiciona o middleware que executa o mapeamento das controllers
 app.MapControllers();
