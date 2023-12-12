@@ -8,9 +8,13 @@ using APICatalogo.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenXmlPowerTools;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -30,6 +34,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiagenda", Version = "v1" });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
@@ -56,6 +64,18 @@ builder.Services.AddSwaggerGen(c =>
        }
     });
 });
+
+//difine serviço de versionamento da Web Api
+builder.Services.AddApiVersioning(o =>
+{
+    o.AssumeDefaultVersionWhenUnspecified = true;
+    o.DefaultApiVersion = new ApiVersion(1, 0);
+    o.ReportApiVersions = true;
+    o.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
+});
+
+//builder.Services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
 
 ////definir politica cors via atributo
 //builder.Services.AddCors(options =>

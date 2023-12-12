@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Context;
 using APICatalogo.DTOs;
 using APICatalogo.Models;
+using APICatalogo.Repository;
 using APICatalogo.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace APICatalogo.Controllers
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     [Route("api/[controller]")]
     [ApiController]
     //[EnableCors("PermitirApiRequest")]
@@ -20,6 +22,8 @@ namespace APICatalogo.Controllers
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
+        private IUnitOfWork repository;
+        private IMapper mapper;
 
         public CategoriasController(AppDbContext context, IConfiguration config, ILogger<ProdutosController> logger, IMapper mapper)
         {
@@ -29,6 +33,11 @@ namespace APICatalogo.Controllers
             _mapper = mapper;
         }
 
+        public CategoriasController(IUnitOfWork repository, IMapper mapper)
+        {
+            this.repository = repository;
+            this.mapper = mapper;
+        }
 
         [HttpGet("autor")]
         public String GetAutor()
